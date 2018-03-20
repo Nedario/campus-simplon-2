@@ -25,4 +25,8 @@ export const routes = [
     name: "todo",
     component: Todo
   },
+  {
+    path: "*",
+    redirect: {name: "home"},
+  },
 ];

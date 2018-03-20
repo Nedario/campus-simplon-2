@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="doomsday">
-    <h2>Winter is Coming !!!</h2>
+    <h2>CodeCombat in ...</h2>
     <span id="date"> {{ doomsday }}</span>
     <p>getReady()</p>
   </div>
@@ -40,8 +40,8 @@ export default {
 #doomsday {
   border: 2px solid;
   border-radius: .4rem;
-  font-family: 'Creepster', cursive;
-  max-width: 320px;
+  /* font-family: 'Creepster', cursive; */
+  max-width: 400px;
   margin: 0 auto 20px;
   padding: 5px 5px 10px;
   position: relative;

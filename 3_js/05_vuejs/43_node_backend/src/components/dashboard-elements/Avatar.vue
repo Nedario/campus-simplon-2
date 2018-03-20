@@ -9,7 +9,6 @@
 <script>
 import axios from 'axios';
 import { EventBus } from "./../../event-bus.js";
-console.log(EventBus);
 
 export default {
   data() {
@@ -23,6 +22,9 @@ export default {
     this.input = this.$el.querySelector("#input_file");
   },
   methods: {
+    checkFileSize(size) {
+      return (size / 1024) / 1024 <= 2;
+    },
     checkMimeType(type) {
       const isAuthorized = [
         "image/gif",
@@ -43,19 +45,27 @@ export default {
 
         this.input.onchange = (e) => { // à chaque event change sur l'input
           const file = e.target.files["0"]; // on récupère le fichier sélectionné ...
-          const checked = this.checkMimeType(file.type); // si c'est une image...
-          if (checked) resolve(file); // on la retourne via le callback de succès
-          else reject("je ne veux pas de ton fichier"); // sinon callback d'erreur -> msg
+          let checked = this.checkMimeType(file.type);
+          if (!checked) reject("je ne veux pas de ton fichier"); // si ce n'est pas une image...
+          checked = this.checkFileSize(file.size);
+          if (!checked) reject("fichier supérieur à 2mo ..."); //si le fichier est trop lourd
+          else resolve(file); // sinon on la retourne via le callback de succès
         };
       });
     },
     sendToServer(img) {
+      const vm = this;
+      const fd = new FormData();
+      fd.append('avatar', img);
       axios({
-        method: "patch",
-        url: "http://localhost:3000/user",
-        data: {
-          avatar: img
-        }
+        method: "post",
+        url: "http://localhost:3000/avatar",
+        data: fd,
+        onUploadProgress: function (progressEvent) {
+          // Do whatever you want with the native progress event
+          let percentLoaded = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+          console.log(percentLoaded + "%");
+        },
       });
     },
     uploadAvatar() {
@@ -65,6 +75,7 @@ export default {
         // si la promesse est tenue ...
         console.log("file type ok, let's continue");
         console.log(img);
+        this.sendToServer(img);
         EventBus.$emit("message-from-app", null);
 
       }).catch(err => {
@@ -83,10 +94,14 @@ export default {
 </script>
 <style lang="css" scoped>
 #avatar {
+  align-items: center;
   border: 2px solid;
+  border-radius: 50%;
   cursor: pointer;
-  height: 70px;
-  width: 70px;
+  display: flex;
+  height: 75px;
+  justify-content: center;
+  width: 75px;
 }
 #wrap {
   position: relative;

@@ -5,7 +5,6 @@
     <input type="submit" class="btn" value="ok" @click="checkForm($event)">
   </form>
 </template>
-
 <script>
 export default {
   mounted() {
@@ -19,7 +18,6 @@ export default {
   }
 }
 </script>
-
 <style lang="css" scoped>
 #login {
   display: flex;

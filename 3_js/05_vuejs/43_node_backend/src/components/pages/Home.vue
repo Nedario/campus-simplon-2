@@ -13,6 +13,7 @@
         npm install --save body-parser<br>
         npm install --save mysql<br>
         npm install --save vue-router<br>
+        <b style="color: purple;">npm install --save multer</b><br>
         <span>-------------------------</span><br>
         npm install --save @fortawesome/fontawesome<br>
         npm install --save @fortawesome/fontawesome-free-solid<br>

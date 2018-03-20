@@ -6,7 +6,7 @@
       </li>
       <li class="item">
         <b>Avatar@Dashboard</b> => Au click sur Avatar, ouvrir une boite de dialogue
-        de type <b>file</b>. Vérifier le type mime de la donnée à uploader :
+        de type <b>file</b>.<br> Vérifier le type mime de la donnée à uploader :
         le fichier doit être une image.
       </li>
       <li class="item">
@@ -24,9 +24,9 @@
         Sinon, ajouter une classe warning sur les champs manquants.<br>
       </li>
       <li class="item">
-        <b>Users@myAPI</b> => <br>
-        Se renseigner sur les verbes HTTP disponibles pour la construction de votre API Users.
-        Créer une base de données nommée node-backend dans <b>phpMyAdmin</b>.
+        <b>Users@myAPI</b> =><br>
+        Se renseigner sur les verbes HTTP disponibles pour la construction de votre API Users.<br>
+        Créer une base de données nommée node-backend dans <b>phpMyAdmin</b>.<br>
         Créer un fichier src/api/basic.js dans votre application Vue<br>
         Créer un fichier src/api/models/users.js dans votre application Vue<br>
       </li>

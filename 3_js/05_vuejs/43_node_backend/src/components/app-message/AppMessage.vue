@@ -11,7 +11,7 @@ export default {
   created() {
     // EventBus.$on("message-from-app", function(msg) { // syntaxe ES5
     EventBus.$on("message-from-app", msg => {
-      console.log("message reçu ! " + msg)
+      // console.log("message reçu ! " + msg)
       this.setMessageStyle(msg);
       this.message = (typeof msg === "object" && msg !== null) ? msg.txt : msg;
     });
