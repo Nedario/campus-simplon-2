@@ -11,6 +11,7 @@ const uploaderAvatar = uploader.single('avatar');
 // config des types de données acceptées en param ajax
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 // config simple du C.O.R.S
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -27,30 +28,39 @@ app.get('/', (req, res) => {
 
 app.get('/user', (req, res) => {
   console.log("get-user@api");
-  userModel.get((data) => {
+  userModel.get((response) => {
     console.log('data after get all users');
-    console.log(data);
-    res.send(data);
+    console.log(response);
+    res.send(response);
   });
 });
 
 app.get('/user/:id', (req, res) => {
   console.log("get-user:id@api => " + req.params.id);
-  userModel.get((data) => {
+  userModel.get((response) => {
     console.log('data after get user by id');
-    console.log(data);
-    res.send(data);
+    console.log(response);
+    res.send(response);
   }, req.params.id); // le second param est ici !!!
+});
+
+app.post("/login", (req, res) => {
+  console.log("get-login@api");
+  console.log(req.body);
+  userModel.login((response) => {
+    console.log('response after login user');
+    console.log(response);
+    res.send(response);
+  }, req.body); // le second param est ici !!!
 });
 
 app.post('/user', (req, res) => {
   console.log('post-user@api');
   console.log(req.body);
-
-  userModel.create((data) => {
+  userModel.create((response) => {
     console.log('data after create user');
-    console.log(data);
-    res.send(data);
+    console.log(response);
+    res.send(response);
   }, req.body); // le second param est ici !!!
 });
 
@@ -65,18 +75,18 @@ app.delete('/user/:id', (req, res) => {
 
 });
 
-app.post('/avatar', uploader.single('avatar'), (req, res) => {
-  console.log(req);
+app.post('/avatar', uploaderAvatar, (req, res) => {
+  // console.log(req);
   if (!req.file) { // pas de fichier reçu, retour au client
     console.log("No file received");
-    return res.send({message: "No file received"});
+    return res.send({error: true, message: "No file received"});
   } else { // fichier ok
     console.log('file received');
     uploaderAvatar(req, res, (err) => { // multer lance l'upload
       if (err) { // si une erreur survient pendant l'upload...
-        return res.send({message: "Error during upload"});
+        return res.send({error: true, message: "Error during upload"});
       } // si tout s'est bien passé ...
-      res.send({message: "file received"});
+      res.send({error: false, message: "file received"});
     });
   }
 });

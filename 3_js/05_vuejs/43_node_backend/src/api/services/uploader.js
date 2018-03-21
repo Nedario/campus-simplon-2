@@ -1,14 +1,10 @@
 /* jshint esversion : 6 */
-const fs = require("fs");
-const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: "./src/uploads/",
-  filename: (req, file, cb) => {
-    console.log("**************");
-    console.log(file.originalname);
-    cb(null, Date.now() + "_" + file.originalname);
+  filename: (req, file, clbk) => {
+    clbk(null, Date.now() + "_" + file.originalname);
   }
 });
 

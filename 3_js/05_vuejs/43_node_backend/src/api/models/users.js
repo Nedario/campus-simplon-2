@@ -41,15 +41,14 @@ const checkMail = (clbk, mail) => {
 
 const create = (clbk, data) => {
 
-  // checkMail(res => {
+  checkMail(res => {
     // console.log(res);
     // console.log(res[0].count);
 
-    // if (res[0].count > 0) {
-      // cette adresse mail est déjà en base
-      // clbk({error: true, message: "mail allready exists"});
-    // }
-    // else {
+    if (res[0].count > 0) { // cette adresse mail est déjà en base
+      return clbk({error: true, message: "mail already exists"});
+    }
+    else {
       // la base ne contient pas encore cette adresse mail, poursuivons l'insertion
       let query = `INSERT INTO users (mail, password) VALUES
       (${connection.escape(data.mail)}, ${connection.escape(data.password)})`;
@@ -57,12 +56,11 @@ const create = (clbk, data) => {
       connection.query(query, (error, results, fields) => {
         if (error) throw error; // en cas d'erreur, une exception est levée
         results.error = false;
-        results.message = "tadaa : you're now registered !";
+        results.message = "tadaa : you're now registered !!!";
         clbk(results); // on passe les résultats de la requête en argument de la fonction callback
       });
-    // }
-  // }, data.mail);
-
+    }
+  }, data.mail);
 };
 
 const remove = (clbk, id) => {
@@ -76,14 +74,31 @@ const remove = (clbk, id) => {
   });
 };
 
+const login = (clbk, data) => {
+  const q = `SELECT COUNT(*) AS count, id FROM users WHERE mail = '${data.mail}' AND password = '${data.password}' GROUP BY id`;
+  // console.log(data);
+  // console.log(q);
+  connection.query(q, (error, results, fields) => {
+    if (error) throw error; // en cas d'erreur, une exception est levée
+    let count = results[0].count;
+    let res = {};
+    res.error = count === 1 ? false : true;
+    res.id = count === 1 ? results[0].id : null;
+    res.message = count === 1 ? "Yay : You're now logged in !!!" : "Mauvais mail ou mot de passe";
+    clbk(res);
+  });
+
+};
+
 const patch = (clbk, id) => {
 
 
 };
 
 module.exports = {
-  get: get,
   create: create,
-  remove: remove,
+  get: get,
+  login: login,
   patch: patch,
+  remove: remove,
 };
