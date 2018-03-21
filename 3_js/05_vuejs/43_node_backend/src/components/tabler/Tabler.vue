@@ -45,9 +45,9 @@
                     </router-link>
                 </td>
                 <td v-if="deletable" class="clickable" @click="callbackDelete($event, row.id)">
-                    <!-- <i class="fa fa-times"></i> -->
+                    <!-- <i class="icon fa fa-times"></i> -->
                     <!--  ci-dessus ... bug au passage à 0 rows... fontawesome ??? -->
-                    <span>X</span>
+                    <span class="icon">X</span>
                 </td>
             </tr>
         </tbody>
@@ -74,7 +74,8 @@ svg {
 .clickable {
   cursor: pointer;
 }
-.clickable:hover svg {
+
+.clickable:hover .icon {
   color: $color_is_active;
 }
 .tabler {

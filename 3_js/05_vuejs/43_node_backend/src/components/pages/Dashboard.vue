@@ -18,7 +18,7 @@
            {name: 'delete', sortable: false},
        ]"
        :bodyRows="users">
-   </tabler>
+    </tabler>
   </main>
 </template>
 
@@ -30,11 +30,10 @@ import Tabler from "./../tabler/Tabler.vue";
 
 export default {
   created() {
-
     EventBus.$emit("message-from-app", null);
-
     this.getUsers(users => {
       this.users = users;
+      console.log(this.users);
     }, error => {
       console.error(error);
     });
@@ -82,13 +81,12 @@ export default {
         console.log("error axios");
       });
     },
-    tablerSort(v) {
-    }
+    tablerSort(v) {}
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 #intro {
   display: grid;
   grid-template-columns: 70px 1fr;

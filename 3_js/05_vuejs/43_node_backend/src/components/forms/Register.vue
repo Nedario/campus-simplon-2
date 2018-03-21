@@ -47,7 +47,7 @@ export default {
             });
             window.setTimeout(() => {
               this.$router.push({name: "dashboard"});
-            }, 3000);
+            }, 2000);
           } else {
             EventBus.$emit("message-from-app", {
               txt: response.data.message,
@@ -66,6 +66,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+@import "./../../styles/global.scss";
+
 #register {
   display: flex;
   flex-direction: column;

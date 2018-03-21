@@ -54,16 +54,15 @@ export default {
       });
     },
     sendToServer(img) {
-      const vm = this;
       const fd = new FormData();
       fd.append('avatar', img);
       axios({
         method: "post",
         url: "http://localhost:3000/avatar",
         data: fd,
-        onUploadProgress: function (progressEvent) {
+        onUploadProgress: function (evt) {
           // Do whatever you want with the native progress event
-          let percentLoaded = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+          let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
           console.log(percentLoaded + "%");
         },
       });
@@ -92,7 +91,7 @@ export default {
   }
 }
 </script>
-<style lang="css" scoped>
+<style lang="scss" scoped>
 #avatar {
   align-items: center;
   border: 2px solid;

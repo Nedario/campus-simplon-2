@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: null,
-      activeComponent: "FormRegister",
+      activeComponent: "FormLogin",
     }
   },
   methods: {
