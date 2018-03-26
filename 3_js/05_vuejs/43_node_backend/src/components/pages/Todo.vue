@@ -25,7 +25,8 @@
       </li>
       <li class="item">
         <b>Users@myAPI</b> =><br>
-        Se renseigner sur les verbes HTTP disponibles pour la construction de votre API Users.<br>
+        Se renseigner sur les <a target="_blank" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">verbes</a> HTTP disponibles pour la construction de votre API Users.<br>
+        Approfondir aussi votre connaissance des <a target="_blank" href="https://www.w3.org/Protocols/HTTP/HTRESP.html">status</a> HTPP.<br>
         Créer une base de données nommée node-backend dans <b>phpMyAdmin</b>.<br>
         Créer un fichier src/api/basic.js dans votre application Vue<br>
         Créer un fichier src/api/models/users.js dans votre application Vue<br>
@@ -37,7 +38,7 @@
         <span><b>mail</b> => VARCHAR(254) NOT NULL</span><br>
         <span><b>password</b> => VARCHAR(128) NOT NULL</span><br>
         <span><b>avatar</b> => VARCHAR(512) DEFAULT-NULL</span><br>
-        <span><b>about_me</b> => TEXT DEFAULT-NULL</span><br>
+        <span><b>about_me</b> => VARCHAR(280) DEFAULT-NULL</span><br>
         <span><b>is_admin</b> => BOOLEAN DEFAULT-FALSE</span><br>
       </li>
       <li class="item">
@@ -46,7 +47,7 @@
         Modulariser l'API et ses blocks fonctionnels en modules (voir nodeschool - make it modular).
       </li>
       <li class="item">
-        <b>checkForm()@form/Register (front)</b><br>
+        <b class="todo">checkForm()@form/Register (front)</b><br>
         Implanter une fonction de vérification du formulaire d'inscription.<br>
         Vérifier si tous les champs requis sont bien remplis.<br>
         Sinon, ajouter une classe warning sur les champs manquants.<br>
@@ -72,6 +73,15 @@
         et l'id du nouvel utilisateur au client.<br>
         Puis rediriger l'utilisateur vers le dashboard.<br>
         <b>Sinon</b> retourner un message d'erreur.
+      </li>
+      <li class="item">
+        <b  class="todo">AboutMe()</b><br>
+        Créer un component AboutMe() et l'intégrer au dashboard.<br>
+        Ce component permet à l'utilisateur de créer et éditer une description le concernant.<br>
+        Si l'utilisateur n'a pas encore fourni de secription, afficher un texte par défaut.<br>
+        Proposer une icône permettant de saisir le texte.<br>
+        Utiliser l'attribut HTML5 content-editable pour améliorer l'expérience utilisateur.<br>
+        Un appel AJAX enregistre le texte en base.
       </li>
       <li class="item">
         <b  class="todo">@BDDChoses + @ChosesCreate + @ChosesList() + @ChoseTabler(deletable, editable)</b><br><br>

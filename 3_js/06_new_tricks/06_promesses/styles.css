@@ -14,9 +14,6 @@ a {
 q {
   font-style: italic;
 }
-.is-hidden {
-  display: none;
-}
 .error {
   color: firebrick;
 }
@@ -24,7 +21,6 @@ q {
   color: forestgreen;
 }
 .title {
-    cursor: pointer;
     color: dodgerblue;
     font-size: 1.3rem;
     margin: 15px 0;
@@ -34,8 +30,6 @@ q {
     border: none;
     padding: 5px 10px 5px 20px;
     height: 32px;
-    margin: 20px 0;
-    width: 220px;
 }
 .btn {
     outline: none;
@@ -55,10 +49,6 @@ q {
 .btn:hover {
     color: white;
     background-color: dodgerblue;
-}
-.btn.cafe {
-  max-width: 64px;
-  min-width: 64px;
 }
 p {
     box-shadow: -0.9px 0.1px 6.1px 0.2px #696666;
@@ -85,32 +75,4 @@ p {
 .block.is-active {
   background: #BADA55;
   transform: rotate(360deg);
-}
-
-#header_main {
-  background: dodgerblue;
-  color: white;
-  font-weight: bold;
-}
-#main_wrap {
-  display: flex;
-  min-height: 70vh;
-  justify-content: space-between;
-}
-#sidebar {
-  flex: 0 0 20%;
-}
-#nav_main .item {
-  cursor: pointer;
-}
-#nav_main a {
-  pointer-events: none;
-}
-#main_content {
-  flex: 0 0 70%;
-}
-.is-active,
-.is-active * {
-  color: firebrick;
-  font-weight: bold;
 }

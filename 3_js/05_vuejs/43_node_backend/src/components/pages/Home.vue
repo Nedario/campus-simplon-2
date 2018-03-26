@@ -13,13 +13,22 @@
         npm install --save body-parser<br>
         npm install --save mysql<br>
         npm install --save vue-router<br>
-        <b style="color: purple;">npm install --save multer</b><br>
+        <b>npm install --save multer</b><br>
+        <b style="color: purple;">npm install --save cors</b><br>
+        <b style="color: purple;">npm install vuex --save</b><br>
+        <b style="color: purple;">npm install --save helmet</b><br>
+        <b style="color: purple;">npm install -g nsp</b><br>
         <span>-------------------------</span><br>
+        <b style="color: purple;">npm i --save @fortawesome/vue-fontawesome</b><br>
         npm install --save @fortawesome/fontawesome<br>
         npm install --save @fortawesome/fontawesome-free-solid<br>
         npm install --save @fortawesome/fontawesome-free-regular<br>
         npm install --save @fortawesome/fontawesome-free-brands<br>
       </code>
+      <h2>Autres outils</h2>
+      <p>
+        Installer <b><a href="https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd">vue-devtools</a></b>
+      </p>
     </p>
     <h2>Configuration</h2>
     <p>
@@ -77,6 +86,27 @@
       </li>
       <li>
         <a href="https://router.vuejs.org/en/" target="_blank">vue-router</a>
+      </li>
+      <li>
+        <a href="https://github.com/expressjs/multer" target="_blank">multer</a>
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/package/cors" target="_blank">cors</a>
+      </li>
+      <li>
+        <a href="https://github.com/expressjs/session" target="_blank">express-session</a>
+      </li>
+      <li>
+        <a href="https://github.com/FortAwesome/vue-fontawesome" target="_blank">vue-fontawesome</a>
+      </li>
+      <li>
+        <a href="https://vuex.vuejs.org/fr/" target="_blank">vuex</a>
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/package/helmet" target="_blank">express / helmet</a>
+      </li>
+      <li>
+        <a href="https://github.com/nodesecurity/nsp" target="_blank">node security</a>
       </li>
     </ul>
   </main>

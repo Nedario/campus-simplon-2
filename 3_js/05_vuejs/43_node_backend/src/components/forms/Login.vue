@@ -1,14 +1,13 @@
 <template lang="html">
-  <form id="login">
+  <form id="login" autocomplete="on">
     <input type="mail" name="mail" placeholder="votre email" class="input"
-      required value="test-user@test.io">
-    <input type="password" name="password" placeholder="votre mot de passe" class="input"
-      required value="test">
-    <input type="submit" id="submit" class="btn" value="ok" @click="prepareLogin($event)">
+      autocomplete="email" required value="test-user@test.io">
+    <input type="password" name="password" placeholder="votre mot de passe"
+      autocomplete="current-password" class="input" required value="test">
+    <input type="submit" id="submit" class="btn" value="ok" @click="login($event)">
   </form>
 </template>
 <script>
-import axios from "axios";
 import { EventBus } from "./../../event-bus";
 
 export default {
@@ -24,37 +23,6 @@ export default {
     };
   },
   methods: {
-    checkCredentials(loginInfos) {
-      console.log("checkCredentials@Login");
-      console.log(loginInfos);
-      axios({
-        method: "post",
-        url: "http://localhost:3000/login",
-        data: loginInfos
-      }).then(res => {
-        console.log("axios response");
-        console.log(res);
-        console.log(res.data.id);
-
-        EventBus.$emit("message-from-app", {
-          txt: res.data.message,
-          status: "success"
-        });
-
-        window.setTimeout(() => {
-          this.$router.push({name: "dashboard"});
-        }, 2000);
-
-      }).catch(err => {
-        console.log("axios error");
-        console.log(err);
-
-        EventBus.$emit("message-from-app", {
-          txt: err,
-          status: "error"
-        });
-      });
-    },
     checkForm() {
       const data = {};
       var error = 0;
@@ -76,20 +44,35 @@ export default {
       else this.btn.classList.add("is-error");
 
       return {
-        error: error === 0,
+        error: error !== 0,
         data: data
       }
     },
-    prepareLogin(e) {
+    login(e) {
       e.preventDefault();
       const check = this.checkForm();
-
-      if (check.error) {
+      console.warn(this.$store)
+      if (!check.error) {
         EventBus.$emit("message-from-app", null);
-        this.checkCredentials(check.data);
+        this.$store.dispatch("users/login", check.data)
+        .then(res => {
+          EventBus.$emit("message-from-app", {
+            txt: res.data.message,
+            status: "success"
+          });
+          window.setTimeout(() => {
+            this.$router.push({path: `/dashboard/${this.$store.getters["users/user"].id}`});
+          }, 2000);
+        })
+        .catch(err => {
+          EventBus.$emit("message-from-app", {
+            txt: err,
+            status: "error"
+          });
+        });
       } else {
         EventBus.$emit("message-from-app", {
-          txt: "gniiii... mauvais combo poto !",
+          txt: "Merci de vérifier vos informations !",
           status: "error"
         });
       }

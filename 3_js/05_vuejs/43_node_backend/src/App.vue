@@ -23,11 +23,6 @@ export default {
     Burger,
     NavMain,
   },
-  data () {
-    return {
-      msg: 'Vue + Express'
-    }
-  },
   methods: {
     goHome() {
       this.$router.push("/");

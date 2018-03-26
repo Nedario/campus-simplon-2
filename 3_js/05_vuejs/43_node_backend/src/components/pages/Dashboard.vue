@@ -3,7 +3,7 @@
     <h1 class="title">DASHBOARD</h1>
     <div id="intro">
       <avatar></avatar>
-      <p id="about">IAM DASHBOARD... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, obcaecati optio nemo similique veniam repellat vero quas delectus ducimus doloribus saepe possimus accusamus recusandae, ullam quibusdam consectetur eveniet sed earum!</p>
+      <about-me></about-me>
     </div>
     <h2 class="title">Users</h2>
     <tabler
@@ -15,6 +15,7 @@
            {name: 'id', sortable: true},
            {name: 'mail', sortable: true},
            {name: 'avatar', sortable: true},
+           {name: 'about', sortable: true},
            {name: 'delete', sortable: false},
        ]"
        :bodyRows="users">
@@ -23,62 +24,37 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import { mapGetters } from "vuex";
 import { EventBus } from "./../../event-bus.js";
 import Avatar from "./../dashboard-elements/Avatar.vue";
+import AboutMe from "./../dashboard-elements/AboutMe.vue";
 import Tabler from "./../tabler/Tabler.vue";
 
 export default {
   created() {
+    this.$store.dispatch("users/get")
+    // this.$store.dispatch('getUser', 78);
     EventBus.$emit("message-from-app", null);
-    this.getUsers(users => {
-      this.users = users;
-      console.log(this.users);
-    }, error => {
-      console.error(error);
-    });
   },
   components: {
+    AboutMe,
     Avatar,
     Tabler
   },
-  data() {
-    return {
-      users: []
-    }
+  computed: {
+    users() {
+      return this.$store.getters["users/all"]
+    },
   },
   methods: {
-    getUsers(resolve, reject) {
-      console.log("getUsers@Dashboard");
-      axios({
-        method: "get",
-        url: "http://localhost:3000/user",
-      }).then(response => {
-        console.log("response axios");
-        console.log(response);
-        resolve(response.data);
-      })
-      .catch(error => {
-        console.log("error axios");
-        reject(error);
-      });
-    },
     tablerDelete(evt, id) {
       console.log("tablerDelete@Dashboard");
-      axios({
-        method: "delete",
-        url: `http://localhost:3000/user/${id}`
-      }).then(response => {
-        console.log("response axios");
-        console.log(response);
-        this.getUsers(users => {
-          this.users = users;
-        }, error => {
-          console.error(error);
-        });
-      })
-      .catch(error => {
-        console.log("error axios");
+      this.$store.dispatch("deleteUser", id)
+      .then(res => {
+        console.log(res);
+        this.$store.dispatch("users/get")
+      }, err => {
+        console.error(err);
       });
     },
     tablerSort(v) {}
@@ -91,8 +67,5 @@ export default {
   display: grid;
   grid-template-columns: 70px 1fr;
   grid-column-gap: 20px;
-}
-#about {
-  max-width: 720px;
 }
 </style>

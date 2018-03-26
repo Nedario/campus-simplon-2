@@ -1,6 +1,3 @@
 /* jshint esversion : 6 */
-
-const api = require("./src/api/basic.js");
-
-
-console.log("welcome to a world of nodes !");
+console.log("welcome to a world of nodes !!!");
+const api = require("./src/api/api.js");

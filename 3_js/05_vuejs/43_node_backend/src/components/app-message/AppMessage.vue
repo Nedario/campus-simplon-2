@@ -58,9 +58,10 @@ export default {
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  max-width: 320px;
+  max-width: 720px;
   padding: 10px;
   position: relative;
   top: 70px;
+  white-space: pre;
 }
 </style>

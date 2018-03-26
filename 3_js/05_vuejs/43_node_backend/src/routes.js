@@ -1,32 +1,50 @@
 /* jshint esversion : 6 */
+import Vue from 'vue';
+import VueRouter from "vue-router";
 import Home from "./components/pages/Home.vue";
 import Login from "./components/pages/Login.vue";
 import Dashboard from "./components/pages/Dashboard.vue";
 import Todo from "./components/pages/Todo.vue";
 
-export const routes = [
+
+Vue.use(VueRouter);
+
+const routes = [
   {
-    path: "/",
+    component: Home,
     name: "home",
-    component: Home
+    path: "/",
   },
   {
-    path: "/login",
+    component: Login,
     name: "login",
-    component: Login
+    path: "/login",
   },
   {
-    path: "/dashboard",
+    component: Dashboard,
     name: "dashboard",
-    component: Dashboard
+    path: "/dashboard/:id",
+    // beforeEnter: (to, from, next) => {
+    //
+    // }
   },
   {
-    path: "/todo",
+    redirect: {name: "home"},
+    path: "/dashboard",
+  },
+  {
+    component: Todo,
     name: "todo",
-    component: Todo
+    path: "/todo",
   },
   {
     path: "*",
     redirect: {name: "home"},
   },
+
 ];
+
+export default new VueRouter({
+  mode: "history",
+  routes
+});

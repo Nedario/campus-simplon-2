@@ -1,20 +1,31 @@
 <template lang="html">
   <div id="avatar" @click="uploadAvatar()">
     <input type="file" id="input_file">
-    <i v-if="!hasAvatar" id="icon" class="fas fa-user-circle"></i>
+    <font-awesome-icon  v-if="!user || !user.avatar" class="icon" :icon="'user-circle'" size="4x"/>
     <img v-else :src="avatar.src" :alt="`avatar de ${user.mail}`"
     class="img">
   </div>
 </template>
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { EventBus } from "./../../event-bus.js";
 
 export default {
+  created() {
+    console.log("this.user@Avatar")
+    console.log(this.user)
+  },
+  components: {
+    FontAwesomeIcon
+  },
+  computed: {
+    user() {
+      return this.$store.getters["users/user"];
+    }
+  },
   data() {
     return {
-      hasAvatar: false,
-      user: null,
       input: null,
     }
   },
@@ -55,43 +66,45 @@ export default {
     },
     sendToServer(img) {
       const fd = new FormData();
+      fd.append('id', this.user.id);
       fd.append('avatar', img);
-      axios({
-        method: "post",
-        url: "http://localhost:3000/avatar",
-        data: fd,
-        onUploadProgress: function (evt) {
-          // Do whatever you want with the native progress event
-          let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
-          console.log(percentLoaded + "%");
-        },
-      });
+      this.$store.dispatch("users/patchAvatar", fd);
+
+      // return;
+      // axios({
+      //   method: "patch",
+      //   url: "http://localhost:3000/avatar",
+      //   data: fd,
+      //   onUploadProgress: function (evt) {
+      //     // Do whatever you want with the native progress event
+      //     let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
+      //     console.log(percentLoaded + "%");
+      //   },
+      // });
     },
     uploadAvatar() {
       // getImageFile retourne une Promise (introduire de l'asynchronicité)
       // ici, la promesse est d'obtenir une image valide
       this.getImageFile().then(img => {
         // si la promesse est tenue ...
-        console.log("file type ok, let's continue");
-        console.log(img);
         this.sendToServer(img);
         EventBus.$emit("message-from-app", null);
 
       }).catch(err => {
-        // sinon ... On utilise notre bus d'Event pour communiquer
-        // avec le composant AppMessage !
+        // sinon on utilise EventBUs pour communiquer avec le composant AppMessage !
         EventBus.$emit("message-from-app", {
           txt: err,
           status: "warning"
         }); //envoi msg erreur
-        // EventBus.$emit("message-from-app", err); //envoi msg erreur
-        console.log(err);
       });
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+
+@import  "./../../styles/global.scss";
+
 #avatar {
   align-items: center;
   border: 2px solid;
@@ -101,6 +114,9 @@ export default {
   height: 75px;
   justify-content: center;
   width: 75px;
+}
+#avatar:hover {
+  border-color: $color_is_hover;
 }
 #wrap {
   position: relative;

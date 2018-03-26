@@ -1,9 +1,12 @@
 <template lang="html">
-    <form id="register">
-      <input id="mail" type="mail" placeholder="votre email" class="input" value="test-user@test.io">
-      <input id="password" type="password" placeholder="votre mot de passse" class="input" value="test">
-      <input id="password_confirm" type="password" placeholder="confirmez votre mot de passe" class="input" value="test">
-      <input type="submit" class="btn" value="ok" @click="createUser($event)">
+    <form id="register" autocomplete="on">
+      <input id="mail" type="mail" placeholder="votre email" class="input"
+        autocomplete="mail" value="test-user@test.io">
+      <input id="password" type="text" placeholder="votre mot de passe"
+        class="input" value="test">
+      <input id="password_confirm" type="text" placeholder="confirmez votre mot de passe"
+        class="input" value="test">
+      <input type="submit" class="btn" value="ok" @click="register($event)">
     </form>
 </template>
 
@@ -25,39 +28,31 @@ export default {
         }
       }
     },
-    createUser(e) {
+    register(e) {
       console.log("clicked@createUser");
       e.preventDefault();
       const check = this.checkForm();
       if (!check.error) {
-        axios({
-          method: "post",
-          url: "http://localhost:3000/user",
-          data: {
-            mail: check.data.mail,
-            password: check.data.password,
-          }
-        }).then(response => {
-          console.log("response axios");
-          console.log(response);
-          if (!response.data.error) {
-            EventBus.$emit("message-from-app", {
-              txt: response.data.message,
-              status: "success"
-            });
-            window.setTimeout(() => {
-              this.$router.push({name: "dashboard"});
-            }, 2000);
-          } else {
-            EventBus.$emit("message-from-app", {
-              txt: response.data.message,
-              status: "warning"
-            });
-          }
+        this.$store.dispatch('users/register', check.data)
+        .then(res => {
+          EventBus.$emit("message-from-app", {
+            txt: res.data.message,
+            status: "success"
+          });
+          window.setTimeout(() => {
+            this.$router.push({path: `/dashboard/${this.$store.getters["users/user"].id}`});
+          }, 2000);
         })
-        .catch(error => {
-          console.log("error axios");
-          console.log(error);
+        .catch(err => {
+          EventBus.$emit("message-from-app", {
+            txt: err.trim(),
+            status: "error"
+          });
+        });
+      } else {
+        EventBus.$emit("message-from-app", {
+          txt: "Merci de vérifier vos informations !",
+          status: "error"
         });
       }
     }
