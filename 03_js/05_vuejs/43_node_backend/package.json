@@ -1,0 +1,54 @@
+{
+  "name": "43_node_backend",
+  "description": "A Vue.js project",
+  "version": "1.0.0",
+  "author": "owlab-io <contact@owlab.io>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "vue": "cross-env NODE_ENV=development pm2 start -n vue-client webpack-dev-server -f",
+    "server": "pm2 start index.js -n nodeserver --watch  -f",
+    "build": "cross-env NODE_ENV=production webpack — progress — hide-modules",
+    "dev": "npm run server | npm run vue"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.4",
+    "@fortawesome/fontawesome-free-brands": "^5.0.8",
+    "@fortawesome/fontawesome-free-regular": "^5.0.8",
+    "@fortawesome/fontawesome-free-solid": "^5.0.8",
+    "@fortawesome/vue-fontawesome": "0.0.22",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.2.0",
+    "moment": "^2.21.0",
+    "moment-countdown": "0.0.3",
+    "multer": "^1.3.0",
+    "mysql": "^2.15.0",
+    "vue": "^2.5.11",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.4",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^13.0.5",
+    "vue-template-compiler": "^2.4.4",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
+  }
+}
