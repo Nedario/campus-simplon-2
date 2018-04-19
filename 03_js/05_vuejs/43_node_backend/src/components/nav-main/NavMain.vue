@@ -12,13 +12,16 @@
 
 <script>
 
-import { EventBus } from "./../../event-bus";
-
 export default {
   created() {
-    EventBus.$on("toggle-nav-main", status => {
-      console.log(status);
+    this.$ebus.$on("toggle-nav-main", status => {
+      console.log("nav-main status =>", status);
     });
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters["users/isLoggedIn"];
+    },
   },
   data() {
     return {

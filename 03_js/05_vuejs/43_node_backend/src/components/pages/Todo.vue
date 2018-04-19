@@ -27,6 +27,7 @@
         <b>Users@myAPI</b> =><br>
         Se renseigner sur les <a target="_blank" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">verbes</a> HTTP disponibles pour la construction de votre API Users.<br>
         Approfondir aussi votre connaissance des <a target="_blank" href="https://www.w3.org/Protocols/HTTP/HTRESP.html">status</a> HTPP.<br>
+        Cette <a target="_blank" href="http://www.restapitutorial.com/lessons/httpmethods.html">page web</a> donne des infos utiles pour les api Rest...<br><br>
         Créer une base de données nommée node-backend dans <b>phpMyAdmin</b>.<br>
         Créer un fichier src/api/basic.js dans votre application Vue<br>
         Créer un fichier src/api/models/users.js dans votre application Vue<br>
@@ -78,7 +79,7 @@
         <b  class="todo">AboutMe()</b><br>
         Créer un component AboutMe() et l'intégrer au dashboard.<br>
         Ce component permet à l'utilisateur de créer et éditer une description le concernant.<br>
-        Si l'utilisateur n'a pas encore fourni de secription, afficher un texte par défaut.<br>
+        Si l'utilisateur n'a pas encore fourni de description, afficher un texte par défaut.<br>
         Proposer une icône permettant de saisir le texte.<br>
         Utiliser l'attribut HTML5 content-editable pour améliorer l'expérience utilisateur.<br>
         Un appel AJAX enregistre le texte en base.

@@ -12,16 +12,16 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // dummy function pour vérifier si la connectione à la base est bien établie
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+connection.query('SELECT 42 AS solution', function (error, results, fields) {
   if (error) throw error;
-  console.log('Result from DB -> The solution is: ', results[0].solution);
+  console.log('DATABASE SAYS => The solution is', results[0].solution);
 });
 
 const get = (clbk, id) => {
   var query;
 
-  if (id) query = `SELECT id, mail, avatar, about FROM users WHERE id = ${connection.escape(id)}`;
-  else query = 'SELECT id, mail, avatar, about FROM users';
+  if (id) query = `SELECT id, mail, avatar, about, is_admin FROM users WHERE id = ${connection.escape(id)}`;
+  else query = 'SELECT id, mail, avatar, about, is_admin FROM users';
 
   connection.query(query, (error, results, fields) => {
     if (error) throw error; // en cas d'erreur, une exception est levée
@@ -69,19 +69,19 @@ const remove = (clbk, id) => {
 };
 
 const login = (clbk, data) => {
-  const q = `SELECT id, mail, avatar, about FROM users WHERE mail = '${data.mail}' AND password = '${data.password}' GROUP BY id`;
-  // console.log(data);
+  const q = `SELECT id, mail, avatar, about, is_admin FROM users WHERE mail = '${data.mail}' AND password = '${data.password}' GROUP BY id`;
   // console.log(q);
   connection.query(q, (error, results, fields) => {
+
     if (error) throw error;
-    var tmp = results[0] || results;
-    var res = {};
+
+    const tmp = results[0] || results;
+    const res = {};
+
     if (Array.isArray(tmp) && !tmp.length) {
-      res.error = true;
       res.message = "Mauvais mail ou mot de passe";
     } else {
       res.user = tmp;
-      res.error = false;
       res.message = "Yay : You're now logged in !!";
     }
     clbk(res);
@@ -89,22 +89,31 @@ const login = (clbk, data) => {
 
 };
 
-const patchAbout = (clbk, mode, data) => {
-  const q = `UPDATE users SET about = ${connection.escape(data.about)} WHERE id = ${data.id}`;
-  console.log(q);
+const patchAbout = (clbk, about, id) => {
+  const q = `UPDATE users SET about = ${connection.escape(about)} WHERE id = ${id}`;
+  // console.log(q);
   connection.query(q, (error, results, fields) => {
     if (error) throw error;
-    results.error = false;
+    clbk(results);
+  });
+};
+
+const patchAvatar = (clbk, avatar, id) => {
+  const q = `UPDATE users SET avatar = ${connection.escape(avatar)} WHERE id = ${id}`;
+  // console.log(q);
+  connection.query(q, (error, results, fields) => {
+    if (error) throw error;
     clbk(results);
   });
 };
 
 module.exports = {
-  register: register,
-  get: get,
-  login: login,
+  register,
+  get,
+  login,
   patch: {
-    about: patchAbout
+    about: patchAbout,
+    avatar: patchAvatar,
   },
   remove: remove,
 };

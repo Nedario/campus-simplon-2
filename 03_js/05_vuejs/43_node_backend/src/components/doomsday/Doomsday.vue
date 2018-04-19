@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     getDate() {
-      return moment().countdown("2018-05-07").toString();
+      return moment().countdown("2018-05-25").toString();
     }
   },
   mounted() {

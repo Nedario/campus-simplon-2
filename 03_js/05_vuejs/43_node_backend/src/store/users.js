@@ -5,8 +5,6 @@ export const users = {
   namespaced: true,
   state: {
     user: null,
-    userId: null,
-    userToken: null,
     users: [],
   },
   actions: { // les actions sont réservées aux process asynchrones
@@ -31,12 +29,12 @@ export const users = {
         method: "get",
         url: "/user",
       }).then(response => {
-        state.users = response.data;
+        console.log("getallusers", response);
+        commit("users", response.data);
       })
       .catch(error => {
-        console.log("axios store/users/getAll()");
+        console.log("error @ store/users/getAll()");
         console.error(error);
-        state.users = [];
       });
     },
     get({ commit, state }, id) {
@@ -48,25 +46,27 @@ export const users = {
         state.user = response.data[0];
       })
       .catch(error => {
-        console.log("axios store/users/get()");
-        console.error(error);
+        // console.error(error);
       });
     },
     patchAvatar({ commit, state }, payload) {
-      console.log("avatar payload");
-      console.log(payload);
-      for(let pair of payload.entries()) {
-         console.log(pair[0]+ ', '+ pair[1]);
-      }
-      axios({
-        method: "patch",
-        url: "/avatar",
-        data: payload,
-        onUploadProgress: function (evt) {
-          // Do whatever you want with the native progress event
-          let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
-          console.log(percentLoaded + "%");
-        },
+      return new Promise((resolve, reject) => {
+        axios({
+          method: "patch",
+          url: "/avatar",
+          data: payload,
+          onUploadProgress: function (evt) {
+            // Do whatever you want with the native progress event
+            let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
+            console.log(percentLoaded + "%");
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
       });
     },
     register({commit, dispatch, state}, authData) {
@@ -85,7 +85,6 @@ export const users = {
             userToken: response.data.token,
           });
 
-          delete authData.password;
           authData.id = response.data.insertId;
           commit("storeUser", authData);
           resolve(response);
@@ -104,13 +103,13 @@ export const users = {
             mail: authData.mail,
             password: authData.password
           }
-        }).then(response => {
+        }).then(res => {
           commit("auth", {
-            userId: response.data.user.id,
-            userToken: response.data.token,
+            userId: res.data.user.id,
+            userToken: res.data.token,
           });
-          commit("storeUser", response.data.user);
-          resolve(response);
+          commit("storeUser", res.data.user);
+          resolve(res);
 
         }).catch(error => {
           reject(error.response.data.message);
@@ -118,24 +117,48 @@ export const users = {
       });
     },
     logout({commit, state}) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: "post",
+          url: "/logout"
+        }).then(res => {
+          commit("logout", res);
+          resolve(res);
+
+        }).catch(error => {
+          reject("error au logout");
+        });
+      });
     },
   },
   getters: {
     all(state) {
       return state.users;
     },
-    user(state) {
+    isAdmin(state) {
+      return Boolean(state.user ? state.user.isAdmin : 0);
+    },
+    isLoggedIn(state) {
+      return Boolean(state.user ? true : false);
+    },
+    current(state) {
       return state.user;
     },
   },
-  mutations: { // les mutations sont réservées aux actions synchrones
+  mutations: { // les mutations sont réservées aux process synchrones
     auth(state, data) {
       state.userId = data.id;
       state.userToken = data.token;
     },
+    logout(state, data) {
+      state.user = null;
+      state.users = [];
+    },
     storeUser(state, user) {
       state.user = user;
     },
+    users(state, users) {
+      state.users = users;
+    },
   }
-
 };

@@ -5,33 +5,49 @@
 </template>
 
 <script>
-import { EventBus } from "./../../event-bus.js";
 
 export default {
   created() {
-    // EventBus.$on("message-from-app", function(msg) { // syntaxe ES5
-    EventBus.$on("message-from-app", msg => {
-      console.log("message reçu ! " + msg)
-      this.setMessageStyle(msg);
-      this.message = (typeof msg === "object" && msg !== null) ? msg.txt : msg;
+    this.$ebus.$on("display-app-message", msg => {
+      // console.log("message reçu ! ");
+      // console.log(msg);
+
+      if (!msg) return this.resetMessage();
+
+      if (this.checkMessage(msg)) {
+        this.message = msg.txt;
+        this.setMessageStyle(msg);
+      } else {
+        console.error("message mal formé: payload attendu => {txt: 'message', status: 'error|warning|success'}");
+      }
+    });
+
+    this.$ebus.$on("reset-app-message", msg => {
+      this.resetMessage();
     });
   },
   data() {
     return {
       message: null,
-      messageStatus: undefined,
+      statuses: ["error", "success", "warning"] // liste des status ok
     }
   },
   methods: {
+    checkMessage(msg) {
+      var errors = 0;
+      errors += (typeof msg !== "object") ? 1 : 0;
+      errors += (!msg.txt) ? 1 : 0;
+      return errors === 0;
+    },
+    resetMessage() {
+      this.message = null;
+    },
     setMessageStyle(msg) {
-      const statuses = ["error", "success", "warning"]; // liste des status ok
-      if (typeof msg !== "object") return; // si msg n('est pas object, RAS
-      if (!msg || !msg.status) return; // si msg est falsy ou ne contient pas status RAS
-      // easy ... on vérifie si le status est correct
-      this.messageStatus = statuses.find(s => { // on parcoure statuses
-        return s === msg.status; // si msg.status est trouvé, on affecte this.messageStatus
-        // sinon undefined est retourné
-      })
+      // on vérifie si le status est correct
+      const found = this.statuses.find(s => {
+        return s === msg.status; // retourne le status trouvé OU undefined
+      });
+      this.messageStatus = found ? found : "blank";
     }
   }
 }
@@ -49,6 +65,10 @@ export default {
 .error {
   color: #721c24;
   background: #f8d7da;
+}
+.blank {
+  color: inherit;
+  background: transparent;
 }
 
 #app_message {

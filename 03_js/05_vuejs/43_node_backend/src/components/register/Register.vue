@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { EventBus } from "./../../event-bus";
+import axios from 'axios';;
 
 export default {
   mounted() {
@@ -35,7 +34,7 @@ export default {
       if (!check.error) {
         this.$store.dispatch('users/register', check.data)
         .then(res => {
-          EventBus.$emit("message-from-app", {
+          this.$ebus.$emit("display-app-message", {
             txt: res.data.message,
             status: "success"
           });
@@ -44,13 +43,13 @@ export default {
           }, 2000);
         })
         .catch(err => {
-          EventBus.$emit("message-from-app", {
+          this.$ebus.$emit("display-app-message", {
             txt: err.trim(),
             status: "error"
           });
         });
       } else {
-        EventBus.$emit("message-from-app", {
+        this.$ebus.$emit("display-app-message", {
           txt: "Merci de vérifier vos informations !",
           status: "error"
         });

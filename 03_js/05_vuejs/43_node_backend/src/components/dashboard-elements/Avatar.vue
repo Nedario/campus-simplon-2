@@ -1,28 +1,16 @@
 <template lang="html">
-  <div id="avatar" @click="uploadAvatar()">
+  <div id="avatar" @click="uploadAvatar()"
+    :style="{ 'backgroundImage': avatar ? `url('/static/uploads/${avatar}')` : null }">
     <input type="file" id="input_file">
-    <font-awesome-icon  v-if="!user || !user.avatar" class="icon" :icon="'user-circle'" size="4x"/>
-    <img v-else :src="avatar.src" :alt="`avatar de ${user.mail}`"
-    class="img">
+    <font-awesome-icon  v-if="!avatar" class="icon" :icon="'user-circle'" size="4x"/>
   </div>
 </template>
 <script>
-// import axios from 'axios';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import { EventBus } from "./../../event-bus.js";
 
 export default {
-  created() {
-    console.log("this.user@Avatar")
-    console.log(this.user)
-  },
   components: {
     FontAwesomeIcon
-  },
-  computed: {
-    user() {
-      return this.$store.getters["users/user"];
-    }
   },
   data() {
     return {
@@ -66,21 +54,10 @@ export default {
     },
     sendToServer(img) {
       const fd = new FormData();
-      fd.append('id', this.user.id);
       fd.append('avatar', img);
-      this.$store.dispatch("users/patchAvatar", fd);
-
-      // return;
-      // axios({
-      //   method: "patch",
-      //   url: "http://localhost:3000/avatar",
-      //   data: fd,
-      //   onUploadProgress: function (evt) {
-      //     // Do whatever you want with the native progress event
-      //     let percentLoaded = Math.floor((evt.loaded * 100) / evt.total);
-      //     console.log(percentLoaded + "%");
-      //   },
-      // });
+      this.$store.dispatch("users/patchAvatar", fd).then(res => {
+        this.avatar = res.newAvatar;
+      });
     },
     uploadAvatar() {
       // getImageFile retourne une Promise (introduire de l'asynchronicité)
@@ -88,17 +65,18 @@ export default {
       this.getImageFile().then(img => {
         // si la promesse est tenue ...
         this.sendToServer(img);
-        EventBus.$emit("message-from-app", null);
+        this.$ebus.$emit("display-app-message", null);
 
       }).catch(err => {
-        // sinon on utilise EventBUs pour communiquer avec le composant AppMessage !
-        EventBus.$emit("message-from-app", {
+        // sinon on utilise l'EventBus (voir main.js) pour communiquer avec le composant AppMessage !
+        this.$ebus.$emit("display-app-message", {
           txt: err,
           status: "warning"
         }); //envoi msg erreur
       });
     }
-  }
+  },
+  props: ["avatar"]
 }
 </script>
 <style lang="scss" scoped>
@@ -114,6 +92,7 @@ export default {
   height: 75px;
   justify-content: center;
   width: 75px;
+  background-size: cover;
 }
 #avatar:hover {
   border-color: $color_is_hover;
@@ -126,5 +105,9 @@ export default {
 }
 #icon {
   font-size: 4rem;
+}
+#img {
+  height: inherit;
+  width: inherit;
 }
 </style>

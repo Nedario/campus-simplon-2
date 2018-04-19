@@ -4,6 +4,7 @@
       <img src="./../static/img/logo.png" id="logo" @click="goHome()">
       <nav-main></nav-main>
       <burger></burger>
+      <component :is="loginOrLogout"></component>
     </header>
     <app-message></app-message>
     <router-view></router-view>
@@ -13,7 +14,8 @@
 <script>
 import AppMessage from "./components/app-message/AppMessage.vue";
 import NavMain from "./components/nav-main/NavMain.vue";
-
+import LoginIcon from "./components/login/LoginIcon.vue";
+import LogoutIcon from "./components/logout/LogoutIcon.vue";
 import Burger from "./components/burger/Burger.vue";
 
 export default {
@@ -22,11 +24,24 @@ export default {
     AppMessage,
     Burger,
     NavMain,
+    LoginIcon,
+    LogoutIcon,
+  },
+  beforeCreate() {
+    console.log("before create the whole app")
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters["users/isLoggedIn"];
+    },
+    loginOrLogout() {
+      return this.isLoggedIn ? "LogoutIcon" : "LoginIcon";
+    }
   },
   methods: {
     goHome() {
       this.$router.push("/");
-    }
+    },
   }
 }
 </script>
@@ -63,7 +78,8 @@ code {
 #header_main {
   align-items: center;
   background: white;
-  display: flex;
+  display: grid;
+  grid-template-columns: 48px 1fr 32px 32px;
   height: 60px;
   position: fixed;
   width: 100vw;
@@ -77,8 +93,7 @@ code {
   padding: 20px;
 }
 #logo {
-  height: 100%;
-  margin-right: 20px;
+  max-width: 32px;
   cursor: pointer;
 }
 .btn {

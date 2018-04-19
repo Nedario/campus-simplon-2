@@ -6,7 +6,6 @@
 
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import { EventBus } from "./../../event-bus";
 
 export default {
   data() {
@@ -22,7 +21,7 @@ export default {
     toggleNav() {
       this.isActive = !this.isActive;
       this.activeIcon = this.isActive ? "times" : "bars";
-      EventBus.$emit("toggle-nav-main", this.isActive);
+      this.$ebus.$emit("toggle-nav-main", this.isActive);
     }
   }
 }

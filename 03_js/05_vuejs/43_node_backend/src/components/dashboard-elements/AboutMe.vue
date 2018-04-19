@@ -5,7 +5,7 @@
       @paste="$event.preventDefault()"
       @keydown="captureInput($event)"
       @keyup="captureInput($event)">
-      {{ about }}
+      {{ _about }}
     </p>
     <div id="tools">
       <span id="char_count"
@@ -22,19 +22,14 @@
 <script>
 import axios from "axios";
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import { EventBus } from "./../../event-bus";
 
 export default {
   created() {
-    console.log("this.user @AboutMe")
-    console.log(this.user)
-    // this.$store.dispatch()
-    this.about = this.user && this.user.about ? this.user.about : this.defaultPres;
     this.charCount = this.about.length;
   },
   computed: {
-    user() {
-      return this.$store.getters["users/user"];
+    _about() {
+      return this.$props.about;
     }
   },
   components: {
@@ -45,10 +40,8 @@ export default {
   },
   data() {
     return {
-      about: null,
       charCount: null,
       charMax: 140,
-      defaultPres: "Bienvenue sur votre Dashboard ! Vous n'avez pas encore saisi d'information. Merci de vous présenter à la communauté.",
       isEditing: false,
       input: null,
     }
@@ -70,29 +63,26 @@ export default {
       return this.isEditing;
     },
     save() {
-      console.log("save@AboutMe");
       this.about = this.input.innerText;
       if (this.about !== this.defaultPres) {
-        console.log("check if save");
         axios({
           method: "patch",
           url: "http://localhost:3000/about",
           data: {
             about: this.about
           }
-        }).then(response => {
-          console.log("response axios");
-          console.log(response);
+        })
+        .then(response => {
           if (!response.data.error) {
-            EventBus.$emit("message-from-app", {
+            this.$ebus.$emit("display-app-message", {
               txt: response.data.message,
               status: "success"
             });
             window.setTimeout(() => {
-              EventBus.$emit("message-from-app", null);
+              this.$ebus.$emit("reset-app-message");
             }, 2000);
           } else {
-            EventBus.$emit("message-from-app", {
+            this.$ebus.$emit("display-app-message", {
               txt: response.data.message,
               status: "warning"
             });
@@ -104,7 +94,8 @@ export default {
         });
       }
     }
-  }
+  },
+  props: ["about"]
 }
 </script>
 

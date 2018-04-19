@@ -2,11 +2,11 @@
   <main id="main" class="dashboard">
     <h1 class="title">DASHBOARD</h1>
     <div id="intro">
-      <avatar></avatar>
-      <about-me></about-me>
+      <avatar :avatar="user ? user.avatar : null"></avatar>
+      <about-me :about="user ? user.about : null"></about-me>
     </div>
     <h2 class="title">Users</h2>
-    <tabler
+    <tabler v-if="user && user.is_admin"
        :editable="false"
        :deletable="true"
        :callbackDelete="tablerDelete"
@@ -25,16 +25,13 @@
 
 <script>
 // import { mapGetters } from "vuex";
-import { EventBus } from "./../../event-bus.js";
 import Avatar from "./../dashboard-elements/Avatar.vue";
 import AboutMe from "./../dashboard-elements/AboutMe.vue";
 import Tabler from "./../tabler/Tabler.vue";
 
 export default {
   created() {
-    this.$store.dispatch("users/get")
-    // this.$store.dispatch('getUser', 78);
-    EventBus.$emit("message-from-app", null);
+    this.$ebus.$emit("reset-app-message");
   },
   components: {
     AboutMe,
@@ -42,8 +39,11 @@ export default {
     Tabler
   },
   computed: {
+    user() {
+      return this.$store.getters["users/current"];
+    },
     users() {
-      return this.$store.getters["users/all"]
+      return this.$store.getters["users/all"];
     },
   },
   methods: {
@@ -51,8 +51,8 @@ export default {
       console.log("tablerDelete@Dashboard");
       this.$store.dispatch("deleteUser", id)
       .then(res => {
-        console.log(res);
-        this.$store.dispatch("users/get")
+        console.log("fetch users list after tabler user delete")
+        // this.$store.dispatch("users/get");
       }, err => {
         console.error(err);
       });

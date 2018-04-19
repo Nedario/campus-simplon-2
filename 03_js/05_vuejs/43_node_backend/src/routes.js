@@ -3,6 +3,7 @@
 // ./src/routes.js
 
 import Vue from 'vue';
+import store from "./store/store";
 import VueRouter from "vue-router";
 import Home from "./components/pages/Home.vue";
 import Login from "./components/pages/Login.vue";
@@ -21,18 +22,25 @@ const routes = [
     component: Login,
     name: "login",
     path: "/login",
+    beforeEnter: (to, from, next) => {
+      if (store.getters["users/current"]) {
+        next(false);
+      } else {
+        next();
+      }
+    }
   },
   {
     component: Dashboard,
     name: "dashboard",
-    path: "/dashboard/:id",
-    // beforeEnter: (to, from, next) => {
-    //
-    // }
-  },
-  {
-    redirect: {name: "home"},
     path: "/dashboard",
+    beforeEnter: (to, from, next) => {
+      if (store.getters["users/current"]) {
+        next();
+      } else {
+        next({ name: "login"});
+      }
+    }
   },
   {
     component: Todo,
@@ -43,7 +51,6 @@ const routes = [
     path: "*",
     redirect: {name: "home"},
   },
-
 ];
 
 export default new VueRouter({

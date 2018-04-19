@@ -9,7 +9,9 @@
     "vue": "cross-env NODE_ENV=development pm2 start -n vue-client webpack-dev-server -f",
     "server": "pm2 start index.js -n nodeserver --watch  -f",
     "build": "cross-env NODE_ENV=production webpack — progress — hide-modules",
-    "dev": "npm run server | npm run vue"
+    "dev": "run-script-os",
+    "dev:win32": "start npm run server && start npm run vue",
+    "dev:darwin:linux": "npm run server | npm run vue"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.4",
@@ -19,9 +21,12 @@
     "@fortawesome/vue-fontawesome": "0.0.22",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "express-mysql-session": "^1.2.3",
     "express-session": "^1.15.6",
+    "helmet": "^3.12.0",
     "jsonwebtoken": "^8.2.0",
     "moment": "^2.21.0",
     "moment-countdown": "0.0.3",
@@ -45,6 +50,7 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "node-sass": "^4.5.3",
+    "run-script-os": "^1.0.3",
     "sass-loader": "^6.0.6",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",

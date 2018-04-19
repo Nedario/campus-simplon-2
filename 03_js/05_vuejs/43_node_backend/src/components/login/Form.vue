@@ -8,7 +8,6 @@
   </form>
 </template>
 <script>
-import { EventBus } from "./../../event-bus";
 
 export default {
   mounted() {
@@ -51,27 +50,31 @@ export default {
     login(e) {
       e.preventDefault();
       const check = this.checkForm();
-      console.warn(this.$store)
+
       if (!check.error) {
-        EventBus.$emit("message-from-app", null);
+
         this.$store.dispatch("users/login", check.data)
         .then(res => {
-          EventBus.$emit("message-from-app", {
-            txt: res.data.message,
+
+          this.$ebus.$emit("display-app-message", {
+            txt: "yes : login OK !",
             status: "success"
           });
+
           window.setTimeout(() => {
-            this.$router.push({path: `/dashboard/${this.$store.getters["users/user"].id}`});
+            this.$router.push({path: `/dashboard/`});
           }, 2000);
+
         })
         .catch(err => {
-          EventBus.$emit("message-from-app", {
-            txt: err,
+          this.$ebus.$emit("display-app-message", {
+            txt: "no: login error !",
             status: "error"
           });
         });
+
       } else {
-        EventBus.$emit("message-from-app", {
+        EventBus.$emit("display-app-message", {
           txt: "Merci de vérifier vos informations !",
           status: "error"
         });
