@@ -5,38 +5,29 @@
       <avatar :avatar="user ? user.avatar : null"></avatar>
       <about-me :about="user ? user.about : null"></about-me>
     </div>
-    <h2 class="title">Users</h2>
-    <tabler v-if="user && user.is_admin"
-       :editable="false"
-       :deletable="true"
-       :callbackDelete="tablerDelete"
-       :callbackSort="tablerSort"
-       :headerRows="[
-           {name: 'id', sortable: true},
-           {name: 'mail', sortable: true},
-           {name: 'avatar', sortable: true},
-           {name: 'about', sortable: true},
-           {name: 'delete', sortable: false},
-       ]"
-       :bodyRows="users">
-    </tabler>
+    <nav-admin></nav-admin>
+    <router-view></router-view>
   </main>
 </template>
 
 <script>
 // import { mapGetters } from "vuex";
+import NavAdmin from "./../navigations/NavAdmin.vue";
 import Avatar from "./../dashboard-elements/Avatar.vue";
 import AboutMe from "./../dashboard-elements/AboutMe.vue";
-import Tabler from "./../tabler/Tabler.vue";
+
 
 export default {
+  beforeCreate() {
+    this.$store.dispatch("users/getAll");
+  },
   created() {
     this.$ebus.$emit("reset-app-message");
   },
   components: {
     AboutMe,
     Avatar,
-    Tabler
+    NavAdmin
   },
   computed: {
     user() {
@@ -46,19 +37,6 @@ export default {
       return this.$store.getters["users/all"];
     },
   },
-  methods: {
-    tablerDelete(evt, id) {
-      console.log("tablerDelete@Dashboard");
-      this.$store.dispatch("deleteUser", id)
-      .then(res => {
-        console.log("fetch users list after tabler user delete")
-        // this.$store.dispatch("users/get");
-      }, err => {
-        console.error(err);
-      });
-    },
-    tablerSort(v) {}
-  }
 }
 </script>
 
