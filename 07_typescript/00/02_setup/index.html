@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TSC : basic setup + problem 1</title>
+  <script src="./dist/app.js"></script>
+</head>
+<body>
+  Comprendre la structure du dossier puis realiser le problème suivant :
+  <code>
+    let bankAccount = {
+      money: 2000,
+      deposit(value) {
+          this.money += value;
+      }
+    };
+
+    let myself = {
+        name: "Max",
+        bankAccount: bankAccount,
+        hobbies: ["Sports", "Cooking"]
+    };
+
+    myself.bankAccount.deposit(3000);
+
+    console.log(myself);
+  </code>
+</body>
+</html>
