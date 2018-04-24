@@ -42,10 +42,6 @@ module.exports = (app) => {
 
         if (!response.error) {
 
-          // if (auth.hasUserCredential(req)) {
-          //   console.log("déjà log.. ça plante");
-          // } else console.log("pas encore log");
-
           const secret = auth.generateTokenSecret().then(secret => {
             // response.token = jwt.sign({
             //   exp: Math.floor(Date.now() / 1000) + (60 * 60), // le token expirera dans une heure

@@ -75,6 +75,7 @@ app.get("/", (req, res) => {
 });
 
 // myAPI modules
-const users = require("./users")(app);
+const usersAPI = require("./users")(app);
+const productsAPI = require("./products")(app);
 
 app.listen(port);
