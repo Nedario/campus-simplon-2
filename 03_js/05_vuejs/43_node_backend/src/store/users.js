@@ -104,10 +104,10 @@ export const users = {
             password: authData.password
           }
         }).then(res => {
-          commit("auth", {
-            userId: res.data.user.id,
-            userToken: res.data.token,
-          });
+          // commit("auth", {
+          //   userId: res.data.user.id,
+          //   userToken: res.data.token,
+          // });
           commit("storeUser", res.data.user);
           resolve(res);
 
