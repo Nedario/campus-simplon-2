@@ -21,6 +21,8 @@ axios.interceptors.response.use(response => {
 
     let originalRequest = error.config;
 
+    console.error(error);
+
     if (error.response.status === 401 && !originalRequest._retry) { // if the error is 401 and hasent already been retried
       console.warn("axios.config => 401 !");
     }
