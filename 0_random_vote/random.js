@@ -3,103 +3,79 @@ var random = (function random() {
     "use strict";
 
     var btn, yesno, yes, no, reset, audio, body, content, initialize, list, simploniensHTML, stored, selectedSimplonien, simploniens = [{
-            nom: "Farouk",
+            nom: "Ayaba",
             absent: false
         },
         {
-            nom: "Yannick",
+            nom: "Adam",
             absent: false
         },
         {
-            nom: "Erwan",
+            nom: "Bernard",
             absent: false
         },
         {
-            nom: "Anne Sophie",
+            nom: "Denis",
             absent: false
         },
         {
-            nom: "Junior",
+            nom: "Elias",
             absent: false
         },
         {
-            nom: "Abdelfadeil",
+            nom: "Fatima",
             absent: false
         },
         {
-            nom: "Houssamaddine",
+            nom: "Farida",
             absent: false
         },
         {
-            nom: "Scharazade",
+            nom: "Fégan",
             absent: false
         },
         {
-            nom: "Yohann",
+            nom: "Haroon",
             absent: false
         },
         {
-            nom: "Safiullah",
+            nom: "Jimmy",
             absent: false
         },
         {
-            nom: "Khalil",
+            nom: "Kader",
             absent: false
         },
         {
-            nom: "Sophie",
+            nom: "Laetitia",
             absent: false
         },
         {
-            nom: "Nolls",
+            nom: "Laurie",
             absent: false
         },
         {
-            nom: "Imane",
+            nom: "Nakkib",
             absent: false
         },
         {
-            nom: "Alexis",
+            nom: "Nathalie",
             absent: false
         },
         {
-            nom: "Badou",
+            nom: "Othman",
             absent: false
         },
         {
-            nom: "Laurent",
+            nom: "Quentin",
             absent: false
         },
         {
-            nom: "Lorelaï",
+            nom: "Richard",
             absent: false
         },
         {
-            nom: "Abdelaziz",
-            absent: false
-        },
-        {
-            nom: "Ahrie",
-            absent: false
-        },
-        {
-            nom: "Eric",
-            absent: false
-        },
-        {
-            nom: "Anis",
-            absent: false
-        },
-        {
-            nom: "Awad",
-            absent: false
-        },
-        {
-            nom: "Badra",
-            absent: false
-        },
-        {
-            nom: "Samir",
+            nom: "Sabuj",
             absent: false
         }
     ],
