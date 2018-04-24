@@ -13,7 +13,7 @@
 
 <script>
 import AppMessage from "./components/app-message/AppMessage.vue";
-import NavMain from "./components/nav-main/NavMain.vue";
+import NavMain from "./components/navigations/NavMain.vue";
 import LoginIcon from "./components/login/LoginIcon.vue";
 import LogoutIcon from "./components/logout/LogoutIcon.vue";
 import Burger from "./components/burger/Burger.vue";
@@ -111,6 +111,17 @@ code {
 .input {
   border: 2px solid rgb(0, 0, 0);
   flex-direction: column;
+  height: 32px;
+  margin-bottom: 10px;
+  outline: none;
+  padding: 2px 0 2px 32px;
+  min-width: 220px;
+}
+.select {
+  border: 2px solid rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 32px;
   margin-bottom: 10px;
   outline: none;
